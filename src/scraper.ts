@@ -77,13 +77,13 @@ export interface Author {
   books: string[];
 }
 export async function getAuthorDetail(token: string, dir: string): Promise<Author> {
-  const doc = await urlToDocument(token, instanceUrl + DIR_URL_FRAGMENT + encodeURIComponent(dir));
-
-  const name = textOf(querySelector(doc, ".left_content h2"));
-  const imageUrl = srcOf(querySelector(doc, ".author_img"));
-  const description = textOf(querySelector(doc.getElementById("left"), "p"));
-
-  const listing = doc.getElementById("listing");
+  const doc1 = await urlToDocument(token, instanceUrl + 'indexAuthor.php?dotaz=' + encodeURIComponent(dir))
+  const imageUrl = srcOf(querySelector(doc1, ".author_img"));
+  const description = textOf(querySelector(doc1.getElementById("left"), "p"));
+  
+  const doc2 = await urlToDocument(token, instanceUrl + DIR_URL_FRAGMENT + encodeURIComponent(dir));
+  const name = textOf(querySelector(doc2, ".left_content h2"));
+  const listing = doc2.getElementById("listing");
   const links = querySelectorAll(listing, "a").filter((a) => textOf(a) !== "..");
   const books = links.map((a) => new URL(hrefOf(a), instanceUrl).searchParams.get("file")).filter(isDef);
 
